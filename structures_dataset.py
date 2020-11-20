@@ -1,5 +1,4 @@
 import torch.utils.data as Data
-from PIL import ImageFilter
 from PIL import Image
 import csv
 import torch
@@ -20,7 +19,6 @@ class StructuresDataset(Data.Dataset):
         img_name = self.content[item + 1][0]
         img_path = "./dataset/final-kaggle-data/" + img_name + ".png"
         img = Image.open(img_path).convert("RGB")
-        # img.filter(ImageFilter.SHARPEN)
         img = self.transform(img)
         if self.train:
             label = torch.tensor(int(self.content[item + 1][1]), dtype=torch.long)
@@ -30,5 +28,3 @@ class StructuresDataset(Data.Dataset):
 
     def __len__(self):
         return len(self.content) - 1
-
-
