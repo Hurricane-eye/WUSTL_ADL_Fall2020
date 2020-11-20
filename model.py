@@ -1,4 +1,5 @@
 import torch.nn as nn
+import torchvision.models as models
 
 
 class Flatten(nn.Module):
@@ -9,20 +10,9 @@ class Flatten(nn.Module):
 
 
 def get_model():
-    model = nn.Sequential(
-        nn.Conv2d(3, 16, 5, 2),
-        nn.ReLU(),
-        nn.Conv2d(16, 16, 5, 2),
-        nn.ReLU(),
-        nn.MaxPool2d(5, 1),
-        nn.Conv2d(16, 32, 3, 1),
-        nn.ReLU(),
-        nn.Conv2d(32, 32, 3, 1),
-        nn.ReLU(),
-        nn.MaxPool2d(3, 1),
-        Flatten(),
-        nn.Linear(32 * 43 * 43, 1),
-        nn.Sigmoid()
-    )
 
-    return model
+    resnet18 = models.resnet18(pretrained=True)
+    num_ftrs = resnet18.fc.in_features
+    resnet18.fc = nn.Linear(num_ftrs, 2)
+
+    return resnet18
